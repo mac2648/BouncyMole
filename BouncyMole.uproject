@@ -7,7 +7,11 @@
 		{
 			"Name": "BouncyMole",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Module2D",
+				"Engine"
+			]
 		},
 		{
 			"Name": "Module2D",
