@@ -82,6 +82,14 @@ void ABounceActor::Bounce(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 		{
 			MoveComp->Velocity.Y = SPEED_LIMIT;
 		}
+		if (MoveComp->Velocity.X < -SPEED_LIMIT)
+		{
+			MoveComp->Velocity.X = -SPEED_LIMIT;
+		}
+		if (MoveComp->Velocity.Y < -SPEED_LIMIT)
+		{
+			MoveComp->Velocity.Y = -SPEED_LIMIT;
+		}
 	}
 }
 

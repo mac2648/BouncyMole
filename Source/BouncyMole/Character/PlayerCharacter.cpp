@@ -10,7 +10,8 @@
 #include "Module2D/FlipBook/FlipBookList.h"
 #include "Camera/CameraComponent.h"
 
-#define PUSH_FORCE 200;
+#define PUSH_FORCE 200
+#define MAXIMUM_FORCE 3000
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
@@ -41,6 +42,15 @@ void APlayerCharacter::AddForce(const FInputActionValue& Value)
 	if (CanAddForce)
 	{
 		PushForce += ForceValue * PUSH_FORCE;
+
+		if (PushForce < -MAXIMUM_FORCE)
+		{
+			PushForce = -MAXIMUM_FORCE;
+		}
+		else if (PushForce > 0)
+		{
+			PushForce = 0;
+		}
 	}
 }
 
