@@ -28,7 +28,6 @@ void ABounceActor::BeginPlay()
 	Super::BeginPlay();
 	
 	Collider->OnComponentBeginOverlap.AddDynamic(this, &ABounceActor::Bounce);
-	//Mesh->OnComponentHit.AddDynamic(this, &ABounceActor::Bounce);
 }
 
 void ABounceActor::Bounce(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -59,20 +58,21 @@ void ABounceActor::Bounce(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 
 		if (InvertX)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Velocity X %f"), MoveComp->Velocity.X)
 			MoveComp->Velocity.X *= -1;
-			UE_LOG(LogTemp, Warning, TEXT("Velocity X %f"), MoveComp->Velocity.X)
 		}
 		
 		if (InvertY)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Velocity Y %f"), MoveComp->Velocity.Y)
 			MoveComp->Velocity.Y *= -1;
-			UE_LOG(LogTemp, Warning, TEXT("Velocity Y %f"), MoveComp->Velocity.Y)
 		}
 
 		MoveComp->Velocity.X *= SpeedMultiplier;
 		MoveComp->Velocity.Y *= SpeedMultiplier;
+
+		if (MoveComp->Velocity.Length() > 1400)
+		{
+			Player->IsDrilling = true;
+		}
 
 		if (MoveComp->Velocity.X > SPEED_LIMIT)
 		{
@@ -90,29 +90,6 @@ void ABounceActor::Bounce(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 		{
 			MoveComp->Velocity.Y = -SPEED_LIMIT;
 		}
-	}
-}
-
-void ABounceActor::Bounce(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
-	if (APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor))
-	{
-		if (InvertX)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Velocity X %f"), Player->GetCharacterMovement()->Velocity.X)
-			Player->GetCharacterMovement()->Velocity.X *= -1;
-			UE_LOG(LogTemp, Warning, TEXT("Velocity X %f"), Player->GetCharacterMovement()->Velocity.X)
-		}
-
-		if (InvertY)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Velocity Y %f"), Player->GetCharacterMovement()->Velocity.Y)
-			Player->GetCharacterMovement()->Velocity.Y *= -1;
-			UE_LOG(LogTemp, Warning, TEXT("Velocity Y %f"), Player->GetCharacterMovement()->Velocity.Y)
-		}
-
-		Player->GetCharacterMovement()->Velocity.X *= SpeedMultiplier;
-		Player->GetCharacterMovement()->Velocity.Y *= SpeedMultiplier;
 	}
 }
 

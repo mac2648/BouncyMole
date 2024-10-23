@@ -4,6 +4,7 @@
 #include "BasicEnemy.h"
 #include "PaperFlipbookComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "BouncyMole/Character/PlayerCharacter.h"
 
 ABasicEnemy::ABasicEnemy()
 {
@@ -21,6 +22,8 @@ void ABasicEnemy::BeginPlay()
 	Super::BeginPlay();
 	
 	InitialPosition = GetActorLocation();
+
+	Capsule->OnComponentBeginOverlap.AddDynamic(this, &ABasicEnemy::Attack);
 }
 
 void ABasicEnemy::Tick(float DeltaTime)
@@ -57,5 +60,20 @@ void ABasicEnemy::Move(float DeltaTime)
 	else if ((InitialPosition - GetActorLocation()).IsNearlyZero(20))
 	{
 		IsGoingBack = false;
+	}
+}
+
+void ABasicEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor))
+	{
+		if (Player->GetIsDrilling())
+		{
+			Destroy();
+		}
+		else
+		{
+			Player->TakeDamage();
+		}
 	}
 }
