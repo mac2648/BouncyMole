@@ -58,6 +58,8 @@ protected:
 	virtual void UpdateAnimation(const FVector& CharVelocity);
 	virtual void UpdateRotation(const FVector& CharVelocity);
 
+	inline UCameraComponent* GetCameraComp() const { return Camera; }
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
