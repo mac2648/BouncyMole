@@ -41,8 +41,6 @@ void APlayerCharacter::AddForce(const FInputActionValue& Value)
 	if (CanAddForce)
 	{
 		PushForce += ForceValue * PUSH_FORCE;
-
-		UE_LOG(LogTemp, Warning, TEXT("Force = %f"), PushForce);
 	}
 }
 
