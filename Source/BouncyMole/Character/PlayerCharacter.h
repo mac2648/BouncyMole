@@ -46,6 +46,8 @@ private:
 	bool CanAddForce = false;
 	bool IsDrilling = false;
 	bool CanAct = true;
+	bool CanBounceX = true;
+	bool CanBounceY = true;
 	
 public:
 	APlayerCharacter();
@@ -65,6 +67,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	void StartDrilling();
 	void StopDrilling();
+	void SetCannotBounce(bool IsX);
+	bool GetCanBounce(bool IsX) const { return IsX? CanBounceX : CanBounceY; }
 
 protected:
 	virtual void BeginPlay() override;

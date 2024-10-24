@@ -16,7 +16,7 @@
 #include "BouncyMole/Sprites/PlayerBookList.h"
 
 #define PUSH_FORCE 200.0f
-#define MAXIMUM_FORCE 3000.0f
+#define MAXIMUM_FORCE 2300.0f
 
 APlayerCharacter::APlayerCharacter()
 {
@@ -131,7 +131,7 @@ void APlayerCharacter::DisableAddForce(const FInputActionValue& Value)
 				CanAct = false;
 			});
 
-		GetWorld()->GetTimerManager().SetTimer(Handle, TimerFunc, 0.2, false);
+		GetWorld()->GetTimerManager().SetTimer(Handle, TimerFunc, 0.19, false);
 	}
 
 	PushForce = 0.0f;
@@ -160,6 +160,19 @@ void APlayerCharacter::StopDrilling()
 
 	IsDrilling = false;
 	SoundComp->Stop();
+}
+
+void APlayerCharacter::SetCannotBounce(bool IsX)
+{
+	IsX ? CanBounceX = false : CanBounceY = false;
+
+	FTimerHandle Handle;
+	FTimerDelegate TimedLambda;
+	TimedLambda.BindLambda([this, IsX]() {
+			IsX ? CanBounceX = true : CanBounceY = true;
+		});
+
+	GetWorld()->GetTimerManager().SetTimer(Handle, TimedLambda, 0.025, false);
 }
 
 void APlayerCharacter::Land()
