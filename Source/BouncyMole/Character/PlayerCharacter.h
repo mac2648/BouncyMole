@@ -10,6 +10,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerTakeDamage, int, CurrentHp);
 
 #define MAX_HP 3;
 
+class USoundCue;
+
 UCLASS()
 class BOUNCYMOLE_API APlayerCharacter : public ACharacter2D
 {
@@ -31,6 +33,12 @@ protected:
 	UPROPERTY(BlueprintAssignable)
 	FPlayerTakeDamage OnPlayerTakeDamage;
 
+	UPROPERTY(EditdefaultsOnly, category = "Sound")
+	USoundCue* DrillSound;
+
+	UPROPERTY()
+	UAudioComponent* SoundComp;
+
 private:
 
 	float PushForce = 0.0f;
@@ -39,6 +47,8 @@ private:
 	bool IsDrilling = false;
 	
 public:
+	APlayerCharacter();
+
 	UFUNCTION(BlueprintCallable)
 	int GetCurrentHp() const { return Hp; }
 
@@ -52,6 +62,8 @@ public:
 	void TakeDamage();
 	inline bool GetIsDrilling() const { return IsDrilling; }
 	virtual void Tick(float DeltaTime) override;
+	void StartDrilling();
+	void StopDrilling();
 
 protected:
 	virtual void BeginPlay() override;
@@ -64,6 +76,4 @@ private:
 	void EnableAddForce(const FInputActionValue& Value);
 	void DisableAddForce(const FInputActionValue& Value);
 	void Pause();
-
-	friend class ABounceActor;
 };

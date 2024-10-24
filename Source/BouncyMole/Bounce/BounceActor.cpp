@@ -75,7 +75,7 @@ void ABounceActor::Bounce(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 
 		if (MoveComp->Velocity.Length() > 1400)
 		{
-			Player->IsDrilling = true;
+			Player->StartDrilling();
 		}
 
 		if (MoveComp->Velocity.X > SPEED_LIMIT)
