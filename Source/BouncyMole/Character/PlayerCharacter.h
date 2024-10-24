@@ -6,9 +6,10 @@
 #include "Module2D/Character/Character2D.h"
 #include "PlayerCharacter.generated.h"
 
-/**
- * 
- */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerTakeDamage, int, CurrentHp);
+
+#define MAX_HP 3;
+
 UCLASS()
 class BOUNCYMOLE_API APlayerCharacter : public ACharacter2D
 {
@@ -27,14 +28,26 @@ protected:
 	UPROPERTY(EditDefaultsOnly, category = "UI")
 	TSubclassOf<UUserWidget> PauseWidgetClass;
 
+	UPROPERTY(BlueprintAssignable)
+	FPlayerTakeDamage OnPlayerTakeDamage;
+
 private:
 
 	float PushForce = 0.0f;
-	short Hp = 3;
+	short Hp = MAX_HP;
 	bool CanAddForce = false;
 	bool IsDrilling = false;
 	
 public:
+	UFUNCTION(BlueprintCallable)
+	int GetCurrentHp() const { return Hp; }
+
+	UFUNCTION(BlueprintCallable)
+	float GetPushForce() const { return PushForce; }
+
+	UFUNCTION(BlueprintCallable)
+	float GetPushForcePercent() const;
+
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void TakeDamage();
 	inline bool GetIsDrilling() const { return IsDrilling; }
