@@ -47,6 +47,7 @@ protected:
 public:
 	// Sets default values for this pawn's properties
 	ACharacter2D();
+	inline UCameraComponent* GetCameraComp() const { return Camera; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -58,7 +59,6 @@ protected:
 	virtual void UpdateAnimation(const FVector& CharVelocity);
 	virtual void UpdateRotation(const FVector& CharVelocity);
 
-	inline UCameraComponent* GetCameraComp() const { return Camera; }
 
 public:	
 	// Called every frame

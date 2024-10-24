@@ -8,10 +8,21 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "PaperFlipbookComponent.h"
 #include "Module2D/FlipBook/FlipBookList.h"
-#include "Camera/CameraComponent.h"
+#include "BouncyMole/GameMode/BouncyMoleGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 #define PUSH_FORCE 200
 #define MAXIMUM_FORCE 3000
+
+void APlayerCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (CanJump())
+	{
+		IsDrilling = false;
+	}
+}
 
 void APlayerCharacter::Move(const FInputActionValue& Value)
 {
@@ -83,4 +94,17 @@ void APlayerCharacter::UpdateAnimation(const FVector& CharVelocity)
 void APlayerCharacter::UpdateRotation(const FVector& CharVelocity)
 {
 
+}
+
+void APlayerCharacter::TakeDamage()
+{
+	Hp -= 1;
+
+	if (Hp <= 0)
+	{
+		if (ABouncyMoleGameMode* GameMode = Cast<ABouncyMoleGameMode>(UGameplayStatics::GetGameMode(this)))
+		{
+			GameMode->GameOver();
+		}
+	}
 }

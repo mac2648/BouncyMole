@@ -14,4 +14,6 @@ class BOUNCYMOLE_API ABouncyMoleGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	void GameOver();
 };
