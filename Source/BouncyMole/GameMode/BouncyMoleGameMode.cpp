@@ -1,9 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "BouncyMoleGameMode.h"
+#include "Blueprint/UserWidget.h"
 
 void ABouncyMoleGameMode::GameOver()
 {
-	UE_LOG(LogTemp, Warning, TEXT("You Lost"));
+	if (GameOverWidgetClass)
+	{
+		UUserWidget* GameOverWidget = CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass);
+		GameOverWidget->AddToViewport();
+	}
 }

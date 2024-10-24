@@ -13,6 +13,9 @@ UCLASS()
 class BOUNCYMOLE_API ABouncyMoleGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+
+	UPROPERTY(EditDefaultsOnly, category = "UI")
+	TSubclassOf<UUserWidget> GameOverWidgetClass;
 	
 public:
 	void GameOver();
