@@ -27,6 +27,7 @@ public:
 	float GetTimeLeft() const { return TimeLeft; }
 
 	void GameOver();
+	void AddTime();
 
 	virtual void Tick(float DeltaTime) override;
 };

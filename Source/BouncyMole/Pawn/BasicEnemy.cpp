@@ -7,6 +7,7 @@
 #include "BouncyMole/Character/PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
+#include "BouncyMole/GameMode/BouncyMoleGameMode.h"
 
 ABasicEnemy::ABasicEnemy()
 {
@@ -93,6 +94,11 @@ void ABasicEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 
 void ABasicEnemy::Die()
 {
+	if (ABouncyMoleGameMode* GameMode = Cast<ABouncyMoleGameMode>(UGameplayStatics::GetGameMode(this)))
+	{
+		GameMode->AddTime();
+	}
+
 	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
 
 	Destroy();
