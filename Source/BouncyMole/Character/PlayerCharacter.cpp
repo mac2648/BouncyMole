@@ -11,9 +11,16 @@
 #include "BouncyMole/GameMode/BouncyMoleGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 
 #define PUSH_FORCE 200.0f
 #define MAXIMUM_FORCE 3000.0f
+
+APlayerCharacter::APlayerCharacter()
+{
+	SoundComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+}
 
 void APlayerCharacter::BeginPlay()
 {
@@ -28,9 +35,9 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (CanJump())
+	if (CanJump() && IsDrilling)
 	{
-		IsDrilling = false;
+		StopDrilling();
 	}
 }
 
@@ -95,6 +102,24 @@ void APlayerCharacter::DisableAddForce(const FInputActionValue& Value)
 	GetCharacterMovement()->Velocity = Direction;
 
 	PushForce = 0.0f;
+}
+
+void APlayerCharacter::StartDrilling()
+{
+	IsDrilling = true;
+	if (!SoundComp->IsPlaying())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Starting"))
+		SoundComp->SetSound(DrillSound);
+		SoundComp->Play();
+	}
+}
+
+void APlayerCharacter::StopDrilling()
+{
+	UE_LOG(LogTemp, Warning, TEXT("STOPPING"))
+	IsDrilling = false;
+	SoundComp->Stop();
 }
 
 void APlayerCharacter::UpdateAnimation(const FVector& CharVelocity)
