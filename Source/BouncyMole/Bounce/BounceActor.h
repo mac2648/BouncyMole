@@ -33,9 +33,14 @@ class BOUNCYMOLE_API ABounceActor : public AActor
 	UPROPERTY(EditAnywhere)
 	bool InvertY = false;
 
+	class APlayerCharacter* Player = nullptr;
+	FVector LastHitFace;
+
 public:	
 	// Sets default values for this actor's properties
 	ABounceActor();
+
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -43,7 +48,9 @@ protected:
 
 	UFUNCTION()
 	void Bounce(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	void Bounce(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+	UFUNCTION()
+	void Clear(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	float GetAngleFromNormalizedVector(const FVector2D& Vec);
 };

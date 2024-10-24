@@ -8,13 +8,13 @@
 #include "Sound/SoundCue.h"
 #include "Kismet/GameplayStatics.h"
 
-#define SPEED_LIMIT 3000
+#define SPEED_LIMIT 2300
 
 // Sets default values
 ABounceActor::ABounceActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	Collider = CreateDefaultSubobject<UBoxComponent>(TEXT("Collider"));
 	SetRootComponent(Collider);
@@ -30,16 +30,31 @@ void ABounceActor::BeginPlay()
 	Super::BeginPlay();
 	
 	Collider->OnComponentBeginOverlap.AddDynamic(this, &ABounceActor::Bounce);
+	Collider->OnComponentEndOverlap.AddDynamic(this, &ABounceActor::Clear);
+}
+
+void ABounceActor::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (Player)
+	{
+		FVector NewLocation = Player->GetActorLocation();
+		NewLocation += LastHitFace * -5;
+
+		Player->SetActorLocation(NewLocation);
+	}
 }
 
 void ABounceActor::Bounce(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor))
+	Player = Cast<APlayerCharacter>(OtherActor);
+	if (Player)
 	{
 		/*
 		The idea here is to find both angles by using the cos from the normalized vectors, and them with the distance between the two
 		angles and with it find the exit angle and velocity. For now time does not allow to follow the idea, so later try out this approach
-		
+
 		FVector2D ImpactNormal(SweepResult.ImpactNormal.X, SweepResult.ImpactNormal.Y);
 
 		FVector PlayerVel = Player->GetCharacterMovement()->Velocity;
@@ -56,45 +71,58 @@ void ABounceActor::Bounce(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 		UE_LOG(LogTemp, Warning, TEXT("%f"), AngleDiference);
 		*/
 
-		UGameplayStatics::PlaySoundAtLocation(this, BounceSound, SweepResult.Location);
+		LastHitFace = SweepResult.ImpactNormal;
 
-		UCharacterMovementComponent* MoveComp = Player->GetCharacterMovement();
+		if (Player->GetCanBounce(InvertX))
+		{
+			Player->SetCannotBounce(InvertX);
 
-		if (InvertX)
-		{
-			MoveComp->Velocity.X *= -1;
-		}
-		
-		if (InvertY)
-		{
-			MoveComp->Velocity.Y *= -1;
-		}
+			UGameplayStatics::PlaySoundAtLocation(this, BounceSound, SweepResult.Location);
 
-		MoveComp->Velocity.X *= SpeedMultiplier;
-		MoveComp->Velocity.Y *= SpeedMultiplier;
+			UCharacterMovementComponent* MoveComp = Player->GetCharacterMovement();
 
-		if (MoveComp->Velocity.Length() > 1400)
-		{
-			Player->StartDrilling();
-		}
+			if (InvertX)
+			{
+				MoveComp->Velocity.X *= -1;
+			}
 
-		if (MoveComp->Velocity.X > SPEED_LIMIT)
-		{
-			MoveComp->Velocity.X = SPEED_LIMIT;
-		}
-		if (MoveComp->Velocity.Y > SPEED_LIMIT)
-		{
-			MoveComp->Velocity.Y = SPEED_LIMIT;
-		}
-		if (MoveComp->Velocity.X < -SPEED_LIMIT)
-		{
-			MoveComp->Velocity.X = -SPEED_LIMIT;
-		}
-		if (MoveComp->Velocity.Y < -SPEED_LIMIT)
-		{
-			MoveComp->Velocity.Y = -SPEED_LIMIT;
+			if (InvertY)
+			{
+				MoveComp->Velocity.Y *= -1;
+			}
+
+			MoveComp->Velocity.X *= SpeedMultiplier;
+			MoveComp->Velocity.Y *= SpeedMultiplier;
+
+			if (MoveComp->Velocity.Length() > 1400)
+			{
+				Player->StartDrilling();
+			}
+
+			if (MoveComp->Velocity.X > SPEED_LIMIT)
+			{
+				MoveComp->Velocity.X = SPEED_LIMIT;
+			}
+			if (MoveComp->Velocity.Y > SPEED_LIMIT)
+			{
+				MoveComp->Velocity.Y = SPEED_LIMIT;
+			}
+			if (MoveComp->Velocity.X < -SPEED_LIMIT)
+			{
+				MoveComp->Velocity.X = -SPEED_LIMIT;
+			}
+			if (MoveComp->Velocity.Y < -SPEED_LIMIT)
+			{
+				MoveComp->Velocity.Y = -SPEED_LIMIT;
+			}
 		}
 	}
+}
+
+void ABounceActor::Clear(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	Player = nullptr;
+	LastHitFace = FVector::ZeroVector;
 }
 
 float ABounceActor::GetAngleFromNormalizedVector(const FVector2D& Vec)
