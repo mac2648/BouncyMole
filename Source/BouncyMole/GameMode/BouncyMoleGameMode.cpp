@@ -1,9 +1,13 @@
 #include "BouncyMoleGameMode.h"
 #include "Blueprint/UserWidget.h"
+#include "Sound/SoundCue.h"
+#include "Components/AudioComponent.h"
 
 ABouncyMoleGameMode::ABouncyMoleGameMode()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	SoundComp = CreateDefaultSubobject<UAudioComponent>(TEXT("Audio comp"));
 }
 
 void ABouncyMoleGameMode::GameOver()
@@ -23,6 +27,12 @@ void ABouncyMoleGameMode::Tick(float DeltaTime)
 	{
 		TimeLeft -= DeltaTime;
 	}
+
+	if (TimeLeft <= 10 && !SoundComp->IsPlaying())
+	{
+		SoundComp->SetSound(Countdown);
+		SoundComp->Play();
+	}
 	
 
 	if (TimeLeft <= 0)
@@ -34,4 +44,9 @@ void ABouncyMoleGameMode::Tick(float DeltaTime)
 void ABouncyMoleGameMode::AddTime()
 {
 	TimeLeft += 10.0f;
+
+	if (SoundComp->IsPlaying())
+	{
+		SoundComp->Stop();
+	}
 }
