@@ -152,7 +152,6 @@ void APlayerCharacter::StartDrilling()
 
 void APlayerCharacter::StopDrilling()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Stop drilling"));
 	GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->DrillLand);
 	GetSprite()->SetLooping(false);
 	
@@ -165,7 +164,6 @@ void APlayerCharacter::StopDrilling()
 
 void APlayerCharacter::Land()
 {
-	UE_LOG(LogTemp, Warning, TEXT("LAND"));
 	GetSprite()->SetLooping(true);
 	GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->Idle);
 	GetSprite()->Play();
@@ -174,7 +172,6 @@ void APlayerCharacter::Land()
 
 void APlayerCharacter::Dash()
 {
-	UE_LOG(LogTemp, Warning, TEXT("DASH"));
 	GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->BounceNormal);
 	GetSprite()->Play();
 	GetSprite()->SetLooping(true);
