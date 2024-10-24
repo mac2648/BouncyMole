@@ -88,6 +88,16 @@ void ABasicEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 		else
 		{
 			Player->TakeDamage();
+
+			Sprite->SetFlipbook(Happy);
+
+			FTimerHandle Handle;
+			FTimerDelegate Func;
+			Func.BindLambda([this]() {
+				Sprite->SetFlipbook(Idle);
+				});
+
+			GetWorld()->GetTimerManager().SetTimer(Handle, Func, 3.5, false);
 		}
 	}
 }
@@ -99,7 +109,10 @@ void ABasicEnemy::Die()
 		GameMode->AddTime();
 	}
 
-	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+	Sprite->SetFlipbook(Dead);
+	Sprite->SetLooping(false);
+	Sprite->OnFinishedPlaying.Clear();
+	Sprite->OnFinishedPlaying.AddDynamic(this, &ABasicEnemy::Disapear);
 
-	Destroy();
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
 }
