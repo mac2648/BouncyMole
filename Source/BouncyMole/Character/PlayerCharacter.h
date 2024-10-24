@@ -21,6 +21,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, category = "Input")
 	UInputAction* EnableAddForceAction;
 
+	UPROPERTY(EditDefaultsOnly, category = "Input")
+	UInputAction* PauseAction;
+
+	UPROPERTY(EditDefaultsOnly, category = "UI")
+	TSubclassOf<UUserWidget> PauseWidgetClass;
+
 private:
 
 	float PushForce = 0.0f;
@@ -35,6 +41,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 protected:
+	virtual void BeginPlay() override;
 	virtual void Move(const FInputActionValue& Value) override;
 	virtual void UpdateAnimation(const FVector& CharVelocity) override;
 	virtual void UpdateRotation(const FVector& CharVelocity) override;
@@ -43,6 +50,7 @@ private:
 	void AddForce(const FInputActionValue& Value);
 	void EnableAddForce(const FInputActionValue& Value);
 	void DisableAddForce(const FInputActionValue& Value);
+	void Pause();
 
 	friend class ABounceActor;
 };

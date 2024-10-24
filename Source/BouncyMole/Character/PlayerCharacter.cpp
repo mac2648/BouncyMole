@@ -10,9 +10,19 @@
 #include "Module2D/FlipBook/FlipBookList.h"
 #include "BouncyMole/GameMode/BouncyMoleGameMode.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
 
 #define PUSH_FORCE 200
 #define MAXIMUM_FORCE 3000
+
+void APlayerCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	PlayerController->SetInputMode(FInputModeGameOnly());
+	PlayerController->SetShowMouseCursor(false);
+}
 
 void APlayerCharacter::Tick(float DeltaTime)
 {
@@ -43,6 +53,7 @@ void APlayerCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 		EnhancedInputComponent->BindAction(EnableAddForceAction, ETriggerEvent::Started, this, &APlayerCharacter::EnableAddForce);
 		EnhancedInputComponent->BindAction(EnableAddForceAction, ETriggerEvent::Completed, this, &APlayerCharacter::DisableAddForce);
 		EnhancedInputComponent->BindAction(AddForceAction, ETriggerEvent::Triggered, this, &APlayerCharacter::AddForce);
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Triggered, this, &APlayerCharacter::Pause);
 	}
 }
 
@@ -106,5 +117,14 @@ void APlayerCharacter::TakeDamage()
 		{
 			GameMode->GameOver();
 		}
+	}
+}
+
+void APlayerCharacter::Pause()
+{
+	if (PauseWidgetClass)
+	{
+		UUserWidget* PauseWidget = CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass);
+		PauseWidget->AddToViewport();
 	}
 }
