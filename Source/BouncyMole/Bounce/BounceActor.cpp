@@ -39,10 +39,13 @@ void ABounceActor::Tick(float DeltaTime)
 
 	if (Player)
 	{
-		FVector NewLocation = Player->GetActorLocation();
-		NewLocation += LastHitFace * -5;
+		if (Player->GetCharacterMovement()->Velocity.IsNearlyZero(30))
+		{
+			FVector NewLocation = Player->GetActorLocation();
+			NewLocation += LastHitFace * -5;
 
-		Player->SetActorLocation(NewLocation);
+			Player->SetActorLocation(NewLocation);
+		}
 	}
 }
 

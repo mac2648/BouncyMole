@@ -30,3 +30,8 @@ void ABouncyMoleGameMode::Tick(float DeltaTime)
 		GameOver();
 	}
 }
+
+void ABouncyMoleGameMode::AddTime()
+{
+	TimeLeft += 10.0f;
+}
