@@ -7,6 +7,7 @@
 #include "BounceActor.generated.h"
 
 class UBoxComponent;
+class USoundCue;
 
 UCLASS()
 class BOUNCYMOLE_API ABounceActor : public AActor
@@ -22,6 +23,9 @@ class BOUNCYMOLE_API ABounceActor : public AActor
 	//1.0 is no multiplier
 	UPROPERTY(EditAnywhere)
 	float SpeedMultiplier = 1.2f;
+
+	UPROPERTY(EditAnywhere)
+	USoundCue* BounceSound;
 
 	UPROPERTY(EditAnywhere)
 	bool InvertX = false;

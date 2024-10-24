@@ -6,6 +6,7 @@
 #include "Components/CapsuleComponent.h"
 #include "BouncyMole/Character/PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 ABasicEnemy::ABasicEnemy()
 {
@@ -81,11 +82,18 @@ void ABasicEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 	{
 		if (Player->GetIsDrilling())
 		{
-			Destroy();
+			Die();
 		}
 		else
 		{
 			Player->TakeDamage();
 		}
 	}
+}
+
+void ABasicEnemy::Die()
+{
+	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+
+	Destroy();
 }

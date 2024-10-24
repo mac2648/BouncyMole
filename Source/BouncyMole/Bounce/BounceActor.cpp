@@ -5,6 +5,8 @@
 #include "Components/BoxComponent.h"
 #include "BouncyMole/Character/PlayerCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
 
 #define SPEED_LIMIT 3000
 
@@ -53,6 +55,8 @@ void ABounceActor::Bounce(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 
 		UE_LOG(LogTemp, Warning, TEXT("%f"), AngleDiference);
 		*/
+
+		UGameplayStatics::PlaySoundAtLocation(this, BounceSound, SweepResult.Location);
 
 		UCharacterMovementComponent* MoveComp = Player->GetCharacterMovement();
 

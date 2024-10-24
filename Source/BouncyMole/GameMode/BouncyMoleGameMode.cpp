@@ -13,6 +13,8 @@ void ABouncyMoleGameMode::GameOver()
 		UUserWidget* GameOverWidget = CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass);
 		GameOverWidget->AddToViewport();
 	}
+
+	SetActorTickEnabled(false);
 }
 
 void ABouncyMoleGameMode::Tick(float DeltaTime)
