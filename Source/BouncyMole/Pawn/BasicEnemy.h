@@ -10,6 +10,7 @@
 class UPaperFlipbookComponent;
 class UCapsuleComponent;
 class USoundCue;
+class UPaperFlipbook;
 
 UCLASS()
 class BOUNCYMOLE_API ABasicEnemy : public APawn, public IRotateToCamera
@@ -28,11 +29,20 @@ class BOUNCYMOLE_API ABasicEnemy : public APawn, public IRotateToCamera
 	UPROPERTY(EditAnywhere)
 	UPaperFlipbookComponent* Sprite;
 
-	UPROPERTY(EditAnywhere, category = "Movement")
-	bool CanMove = false;
-
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundCue* DeathSound;
+
+	UPROPERTY(EditAnywhere, category = "Sprites")
+	UPaperFlipbook* Idle;
+
+	UPROPERTY(EditAnywhere, category = "Sprites")
+	UPaperFlipbook* Dead;
+
+	UPROPERTY(EditAnywhere, category = "Sprites")
+	UPaperFlipbook* Happy;
+
+	UPROPERTY(EditAnywhere, category = "Movement")
+	bool CanMove = false;
 
 	bool IsGoingBack = false;
 	FVector InitialPosition;
@@ -49,4 +59,7 @@ protected:
 	void Move(float DeltaTime);
 	UFUNCTION()
 	void Attack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void Disapear() { Destroy(); }
 };
