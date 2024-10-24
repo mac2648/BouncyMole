@@ -12,8 +12,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
 
-#define PUSH_FORCE 200
-#define MAXIMUM_FORCE 3000
+#define PUSH_FORCE 200.0f
+#define MAXIMUM_FORCE 3000.0f
 
 void APlayerCharacter::BeginPlay()
 {
@@ -111,6 +111,8 @@ void APlayerCharacter::TakeDamage()
 {
 	Hp -= 1;
 
+	OnPlayerTakeDamage.Broadcast(Hp);
+
 	if (Hp <= 0)
 	{
 		if (ABouncyMoleGameMode* GameMode = Cast<ABouncyMoleGameMode>(UGameplayStatics::GetGameMode(this)))
@@ -127,4 +129,9 @@ void APlayerCharacter::Pause()
 		UUserWidget* PauseWidget = CreateWidget<UUserWidget>(GetWorld(), PauseWidgetClass);
 		PauseWidget->AddToViewport();
 	}
+}
+
+float APlayerCharacter::GetPushForcePercent() const
+{
+	return PushForce / MAXIMUM_FORCE;
 }
