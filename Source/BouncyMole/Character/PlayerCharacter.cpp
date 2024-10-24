@@ -8,7 +8,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "PaperFlipbookComponent.h"
 #include "Module2D/FlipBook/FlipBookList.h"
-#include "Camera/CameraComponent.h"
 #include "BouncyMole/GameMode/BouncyMoleGameMode.h"
 #include "Kismet/GameplayStatics.h"
 

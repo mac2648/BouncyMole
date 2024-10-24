@@ -5,6 +5,7 @@
 #include "PaperFlipbookComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "BouncyMole/Character/PlayerCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 ABasicEnemy::ABasicEnemy()
 {
@@ -23,6 +24,15 @@ void ABasicEnemy::BeginPlay()
 	
 	InitialPosition = GetActorLocation();
 
+	if (APlayerCharacter* Player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(this, 0)))
+	{
+		MasterCamera = Player->GetCameraComp();
+	}
+	else
+	{
+		throw "expected APlayerCharacter as the player class";
+	}
+
 	Capsule->OnComponentBeginOverlap.AddDynamic(this, &ABasicEnemy::Attack);
 }
 
@@ -34,6 +44,8 @@ void ABasicEnemy::Tick(float DeltaTime)
 	{
 		Move(DeltaTime);
 	}
+
+	RotateToCamera();
 }
 
 void ABasicEnemy::Move(float DeltaTime)

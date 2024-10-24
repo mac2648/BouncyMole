@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Module2D/Interface/RotateToCamera.h"
 #include "BasicEnemy.generated.h"
 
 class UPaperFlipbookComponent;
 class UCapsuleComponent;
 
 UCLASS()
-class BOUNCYMOLE_API ABasicEnemy : public APawn
+class BOUNCYMOLE_API ABasicEnemy : public APawn, public IRotateToCamera
 {
 	GENERATED_BODY()
 
