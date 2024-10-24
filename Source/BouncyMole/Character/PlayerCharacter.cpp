@@ -13,6 +13,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
+#include "BouncyMole/Sprites/PlayerBookList.h"
 
 #define PUSH_FORCE 200.0f
 #define MAXIMUM_FORCE 3000.0f
@@ -29,6 +30,8 @@ void APlayerCharacter::BeginPlay()
 	APlayerController* PlayerController = Cast<APlayerController>(GetController());
 	PlayerController->SetInputMode(FInputModeGameOnly());
 	PlayerController->SetShowMouseCursor(false);
+
+	GetSprite()->SetFlipbook(BookList->Idle);
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -38,6 +41,18 @@ void APlayerCharacter::Tick(float DeltaTime)
 	if (CanJump() && IsDrilling)
 	{
 		StopDrilling();
+	}
+	else if (CanJump() && GetSprite()->GetFlipbook() == BookList->Idle)
+	{
+		CanAct = true;
+	}
+	else if (CanJump() && GetSprite()->GetFlipbook() == Cast<UPlayerBookList>(BookList)->BounceNormal)
+	{
+		GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->Rest);
+		GetSprite()->SetLooping(false);
+
+		GetSprite()->OnFinishedPlaying.Clear();
+		GetSprite()->OnFinishedPlaying.AddDynamic(this, &APlayerCharacter::Land);
 	}
 }
 
@@ -85,7 +100,10 @@ void APlayerCharacter::AddForce(const FInputActionValue& Value)
 
 void APlayerCharacter::EnableAddForce(const FInputActionValue& Value)
 {
-	CanAddForce = true;
+	if (CanAct)
+	{
+		CanAddForce = true;
+	}
 }
 
 void APlayerCharacter::DisableAddForce(const FInputActionValue& Value)
@@ -98,8 +116,23 @@ void APlayerCharacter::DisableAddForce(const FInputActionValue& Value)
 	Direction.Z = 0;
 	Direction *= PushForce;
 
-	Jump();
-	GetCharacterMovement()->Velocity = Direction;
+	if (Direction.Length() >= 20)
+	{
+		GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->Launch);
+		GetSprite()->OnFinishedPlaying.Clear();
+		GetSprite()->OnFinishedPlaying.AddDynamic(this, &APlayerCharacter::Dash);
+		GetSprite()->SetLooping(false);
+
+		FTimerHandle Handle;
+		FTimerDelegate TimerFunc;
+		TimerFunc.BindLambda([this, Direction]() {
+				Jump();
+				GetCharacterMovement()->Velocity = Direction;
+				CanAct = false;
+			});
+
+		GetWorld()->GetTimerManager().SetTimer(Handle, TimerFunc, 0.2, false);
+	}
 
 	PushForce = 0.0f;
 }
@@ -107,9 +140,11 @@ void APlayerCharacter::DisableAddForce(const FInputActionValue& Value)
 void APlayerCharacter::StartDrilling()
 {
 	IsDrilling = true;
+
+	GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->Drill);
+
 	if (!SoundComp->IsPlaying())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Starting"))
 		SoundComp->SetSound(DrillSound);
 		SoundComp->Play();
 	}
@@ -117,14 +152,34 @@ void APlayerCharacter::StartDrilling()
 
 void APlayerCharacter::StopDrilling()
 {
-	UE_LOG(LogTemp, Warning, TEXT("STOPPING"))
+	GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->DrillLand);
+	GetSprite()->SetLooping(false);
+	
+	GetSprite()->OnFinishedPlaying.Clear();
+	GetSprite()->OnFinishedPlaying.AddDynamic(this, &APlayerCharacter::Land);
+
 	IsDrilling = false;
 	SoundComp->Stop();
 }
 
+void APlayerCharacter::Land()
+{
+	GetSprite()->SetLooping(true);
+	GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->Idle);
+	GetSprite()->Play();
+	CanAct = true;
+}
+
+void APlayerCharacter::Dash()
+{
+	GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->BounceNormal);
+	GetSprite()->Play();
+	GetSprite()->SetLooping(true);
+}
+
 void APlayerCharacter::UpdateAnimation(const FVector& CharVelocity)
 {
-	GetSprite()->SetFlipbook(BookList->Idle);
+	//GetSprite()->SetFlipbook(BookList->Idle);
 }
 
 void APlayerCharacter::UpdateRotation(const FVector& CharVelocity)

@@ -45,6 +45,7 @@ private:
 	short Hp = MAX_HP;
 	bool CanAddForce = false;
 	bool IsDrilling = false;
+	bool CanAct = true;
 	
 public:
 	APlayerCharacter();
@@ -70,6 +71,12 @@ protected:
 	virtual void Move(const FInputActionValue& Value) override;
 	virtual void UpdateAnimation(const FVector& CharVelocity) override;
 	virtual void UpdateRotation(const FVector& CharVelocity) override;
+
+	UFUNCTION()
+	void Land();
+
+	UFUNCTION()
+	void Dash();
 
 private:
 	void AddForce(const FInputActionValue& Value);
