@@ -34,4 +34,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	UPaperFlipbook* DrillLand;
+
+	UPROPERTY(EditAnywhere)
+	UPaperFlipbook* Arrow;
 };
