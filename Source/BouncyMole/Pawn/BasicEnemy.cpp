@@ -116,8 +116,10 @@ void ABasicEnemy::Die()
 		GameMode->AddTime();
 	}
 
+	UE_LOG(LogTemp, Warning, TEXT("JUST DIE"))
 	Sprite->SetFlipbook(Dead);
 	Sprite->SetLooping(false);
+	Sprite->Play();
 	Sprite->OnFinishedPlaying.Clear();
 	Sprite->OnFinishedPlaying.AddDynamic(this, &ABasicEnemy::Disapear);
 
@@ -126,5 +128,7 @@ void ABasicEnemy::Die()
 
 void ABasicEnemy::ChangeToIdle()
 { 
+	UE_LOG(LogTemp, Warning, TEXT("IDLE"))
 	Sprite->SetFlipbook(Idle); 
+	Sprite->SetLooping(true);
 }

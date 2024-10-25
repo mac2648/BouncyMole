@@ -17,6 +17,7 @@ class BOUNCYMOLE_API ABasicEnemy : public APawn, public IRotateToCamera
 {
 	GENERATED_BODY()
 
+protected:
 	UPROPERTY(VisibleAnywhere)
 	UCapsuleComponent* Capsule;
 
@@ -58,8 +59,9 @@ protected:
 	void Die();
 
 	void Move(float DeltaTime);
+
 	UFUNCTION()
-	void Attack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	virtual void Attack(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
 	void Disapear() { Destroy(); }
