@@ -62,4 +62,7 @@ protected:
 
 	UFUNCTION()
 	void Disapear() { Destroy(); }
+
+	UFUNCTION()
+	void ChangeToIdle();
 };

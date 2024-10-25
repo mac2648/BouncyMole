@@ -2,6 +2,10 @@
 #include "Blueprint/UserWidget.h"
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "BouncyMole/Character/PlayerCharacter.h"
+#include "BouncyMole/Pawn/BasicEnemy.h"
+
 
 ABouncyMoleGameMode::ABouncyMoleGameMode()
 {
@@ -12,6 +16,18 @@ ABouncyMoleGameMode::ABouncyMoleGameMode()
 
 void ABouncyMoleGameMode::GameOver()
 {
+	TArray<AActor*> Enemies;
+	UGameplayStatics::GetAllActorsOfClass(this, ABasicEnemy::StaticClass(), Enemies);
+
+	FTimerManager& TimeManager = GetWorld()->GetTimerManager();
+
+	TimeManager.ClearAllTimersForObject(UGameplayStatics::GetPlayerPawn(this, 0));
+
+	for (AActor* Enemy : Enemies)
+	{
+		TimeManager.ClearAllTimersForObject(Enemy);
+	}
+
 	if (GameOverWidgetClass)
 	{
 		UUserWidget* GameOverWidget = CreateWidget<UUserWidget>(GetWorld(), GameOverWidgetClass);
