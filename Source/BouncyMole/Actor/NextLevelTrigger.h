@@ -19,7 +19,7 @@ class BOUNCYMOLE_API ANextLevelTrigger : public AActor
 	UBoxComponent* Box;
 
 	UPROPERTY(EditAnywhere)
-	UWorld* Level;
+	TSoftObjectPtr<UWorld> Level;
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UNextLevel> WidgetClass;
