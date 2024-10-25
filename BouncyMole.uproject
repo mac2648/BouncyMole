@@ -10,7 +10,8 @@
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
 				"Module2D",
-				"Engine"
+				"Engine",
+				"UMG"
 			]
 		},
 		{
