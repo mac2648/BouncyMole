@@ -36,6 +36,9 @@ protected:
 	UPROPERTY(EditdefaultsOnly, category = "Sound")
 	USoundCue* DrillSound;
 
+	UPROPERTY(EditdefaultsOnly, category = "Sound")
+	USoundCue* TakeDamageSound;
+
 	UPROPERTY()
 	UAudioComponent* SoundComp;
 
