@@ -21,6 +21,9 @@
 APlayerCharacter::APlayerCharacter()
 {
 	SoundComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+
+	Arrow = CreateDefaultSubobject< UPaperFlipbookComponent>(TEXT("Arrow Comp"));
+	Arrow->SetupAttachment(GetSprite());
 }
 
 void APlayerCharacter::BeginPlay()
@@ -32,6 +35,12 @@ void APlayerCharacter::BeginPlay()
 	PlayerController->SetShowMouseCursor(false);
 
 	GetSprite()->SetFlipbook(BookList->Idle);
+
+	PowerBar = CreateWidget<UUserWidget>(GetWorld(), PowerBarClass);
+	PowerBar->AddToViewport();
+
+	PowerBar->SetVisibility(ESlateVisibility::Hidden);
+	PowerBar->UpdateCanTick();
 }
 
 void APlayerCharacter::Tick(float DeltaTime)
@@ -103,12 +112,19 @@ void APlayerCharacter::EnableAddForce(const FInputActionValue& Value)
 	if (CanAct)
 	{
 		CanAddForce = true;
+
+		Arrow->SetFlipbook(Cast<UPlayerBookList>(BookList)->Arrow);
+
+		PowerBar->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
 void APlayerCharacter::DisableAddForce(const FInputActionValue& Value)
 {
 	CanAddForce = false;
+	PowerBar->SetVisibility(ESlateVisibility::Hidden);
+
+	Arrow->SetFlipbook(nullptr);
 
 	FRotator ControlRotation = GetControlRotation();
 	ControlRotation.Add(0, 90, 0);
@@ -226,5 +242,5 @@ void APlayerCharacter::Pause()
 
 float APlayerCharacter::GetPushForcePercent() const
 {
-	return PushForce / MAXIMUM_FORCE;
+	return -PushForce / MAXIMUM_FORCE;
 }

@@ -39,6 +39,15 @@ protected:
 	UPROPERTY()
 	UAudioComponent* SoundComp;
 
+	UPROPERTY(EditAnywhere)
+	UPaperFlipbookComponent* Arrow;
+
+	UPROPERTY(EditAnywhere, category = "UI")
+	TSubclassOf<UUserWidget> PowerBarClass;
+
+	UPROPERTY()
+	UUserWidget* PowerBar;
+
 private:
 
 	float PushForce = 0.0f;
