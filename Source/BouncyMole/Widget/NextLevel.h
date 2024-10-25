@@ -15,8 +15,8 @@ class BOUNCYMOLE_API UNextLevel : public UUserWidget
 	GENERATED_BODY()
 public:
 	UPROPERTY(BlueprintReadWrite)
-	UWorld* Level;
+	TSoftObjectPtr<UWorld> Level;
 
 public:
-	void SetLevel(UWorld* NewLevel) { Level = NewLevel; }
+	void SetLevel(TSoftObjectPtr<UWorld> NewLevel) { Level = NewLevel; }
 };
