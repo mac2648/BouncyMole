@@ -45,6 +45,7 @@ class BOUNCYMOLE_API ABasicEnemy : public APawn, public IRotateToCamera
 	bool CanMove = false;
 
 	bool IsGoingBack = false;
+	bool IsDead = false;
 	FVector InitialPosition;
 
 public:

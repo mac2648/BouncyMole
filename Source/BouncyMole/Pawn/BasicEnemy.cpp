@@ -43,7 +43,7 @@ void ABasicEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (CanMove)
+	if (CanMove && !IsDead)
 	{
 		Move(DeltaTime);
 	}
@@ -109,6 +109,8 @@ void ABasicEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 
 void ABasicEnemy::Die()
 {
+	IsDead = true;
+
 	if (ABouncyMoleGameMode* GameMode = Cast<ABouncyMoleGameMode>(UGameplayStatics::GetGameMode(this)))
 	{
 		GameMode->AddTime();
