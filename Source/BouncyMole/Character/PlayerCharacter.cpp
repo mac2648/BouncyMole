@@ -220,6 +220,8 @@ void APlayerCharacter::TakeDamage()
 {
 	Hp -= 1;
 
+	UGameplayStatics::PlaySound2D(GetWorld(), TakeDamageSound);
+
 	OnPlayerTakeDamage.Broadcast(Hp);
 
 	if (Hp <= 0)

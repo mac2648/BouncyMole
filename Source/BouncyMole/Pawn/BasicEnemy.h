@@ -33,6 +33,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundCue* DeathSound;
 
+	UPROPERTY(EditAnywhere, Category = "Sound")
+	USoundCue* WalkSound;
+
+	UPROPERTY()
+	UAudioComponent* SoundComp;
+
 	UPROPERTY(EditAnywhere, category = "Sprites")
 	UPaperFlipbook* Idle;
 

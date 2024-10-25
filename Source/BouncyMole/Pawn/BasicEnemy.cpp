@@ -9,6 +9,7 @@
 #include "Sound/SoundCue.h"
 #include "BouncyMole/GameMode/BouncyMoleGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/AudioComponent.h"
 
 ABasicEnemy::ABasicEnemy()
 {
@@ -19,6 +20,9 @@ ABasicEnemy::ABasicEnemy()
 
 	Sprite = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Sprite"));
 	Sprite->SetupAttachment(Capsule);
+
+	SoundComp = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	SoundComp->SetupAttachment(Sprite);
 }
 
 void ABasicEnemy::BeginPlay()
@@ -37,6 +41,12 @@ void ABasicEnemy::BeginPlay()
 	}
 
 	Capsule->OnComponentBeginOverlap.AddDynamic(this, &ABasicEnemy::Attack);
+
+	/*if (CanMove)
+	{
+		SoundComp->SetSound(WalkSound);
+		SoundComp->Play();
+	}*/
 }
 
 void ABasicEnemy::Tick(float DeltaTime)
