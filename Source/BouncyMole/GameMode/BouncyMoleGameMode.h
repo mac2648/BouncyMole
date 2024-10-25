@@ -21,10 +21,10 @@ class BOUNCYMOLE_API ABouncyMoleGameMode : public AGameModeBase
 	float TimeLeft = 120.0f;
 
 	UPROPERTY(EditdefaultsOnly, category = "Sound")
-	USoundCue* Countdown;
+	class USoundCue* Countdown;
 
 	UPROPERTY()
-	UAudioComponent* SoundComp;
+	class UAudioComponent* SoundComp;
 	
 public:
 	ABouncyMoleGameMode();

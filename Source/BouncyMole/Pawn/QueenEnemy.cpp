@@ -13,14 +13,18 @@ void AQueenEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (CD <= 0)
+	if (!IsDead)
 	{
-		CastMagic();
-		CD = AttackCD;
-	}
-	else
-	{
-		CD -= DeltaTime;
+		if (CD <= 0)
+		{
+			CastMagic();
+			CD = AttackCD;
+		}
+		else
+		{
+			CD -= DeltaTime;
+		}
+		Sprite->Play();
 	}
 }
 
