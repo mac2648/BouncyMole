@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 #include "BouncyMole/GameMode/BouncyMoleGameMode.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 ABasicEnemy::ABasicEnemy()
 {
@@ -88,6 +89,14 @@ void ABasicEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 		else
 		{
 			Player->TakeDamage();
+
+			FVector PlayerLocation = Player->GetActorLocation();
+			FVector Direction = PlayerLocation - GetActorLocation();
+			Direction.Normalize();
+			Direction *= 200;
+			Direction.Z = 0;
+
+			Player->GetCharacterMovement()->Velocity = Direction;
 
 			Sprite->SetFlipbook(Happy);
 
