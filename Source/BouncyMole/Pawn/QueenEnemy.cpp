@@ -40,6 +40,8 @@ void AQueenEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 				GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 				ABasicEnemy::Die();
 			}
+			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
+
 			UE_LOG(LogTemp, Warning, TEXT("%d"), HP)
 		}
 		else
