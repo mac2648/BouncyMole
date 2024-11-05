@@ -17,7 +17,7 @@ void AQueenEnemy::Tick(float DeltaTime)
 	{
 		if (CD <= 0)
 		{
-			CastMagic();
+			StartCastAnimation();
 			CD = AttackCD;
 		}
 		else
@@ -75,9 +75,15 @@ void AQueenEnemy::CastMagic()
 	{
 		MAttack->SetTarget(UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation() - GetActorLocation());
 	}
-	
+}
+
+void AQueenEnemy::StartCastAnimation()
+{
 	Sprite->SetFlipbook(MagicAnim);
 	Sprite->SetLooping(false);
 	Sprite->OnFinishedPlaying.Clear();
 	Sprite->OnFinishedPlaying.AddDynamic(this, &AQueenEnemy::ChangeToIdle);
+
+	FTimerHandle Handle;
+	GetWorld()->GetTimerManager().SetTimer(Handle, this, &AQueenEnemy::CastMagic, 0.6);
 }
