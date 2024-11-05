@@ -46,10 +46,7 @@ void AMagicAttack::Tick(float DeltaTime)
 
 	RotateToCamera();
 
-	FVector Direction = Target - GetActorLocation();
-	Direction.Normalize();
-
-	FVector Location = GetActorLocation() + Direction * DeltaTime * Speed;
+	FVector Location = GetActorLocation() + TargetDirection * DeltaTime * Speed;
 	SetActorLocation(Location);
 }
 

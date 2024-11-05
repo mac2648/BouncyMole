@@ -71,7 +71,7 @@ void AQueenEnemy::CastMagic()
 
 	if (MAttack)
 	{
-		MAttack->SetTarget(UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation());
+		MAttack->SetTarget(UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation() - GetActorLocation());
 	}
 	
 	Sprite->SetFlipbook(MagicAnim);
