@@ -44,8 +44,11 @@ void AMagicAttack::Tick(float DeltaTime)
 
 	RotateToCamera();
 
-	FVector Location = GetActorLocation() + TargetDirection * DeltaTime * Speed;
-	SetActorLocation(Location);
+	if (!HasHit)
+	{
+		FVector Location = GetActorLocation() + TargetDirection * DeltaTime * Speed;
+		SetActorLocation(Location);
+	}
 }
 
 void AMagicAttack::HitTarget(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -58,6 +61,12 @@ void AMagicAttack::HitTarget(UPrimitiveComponent* OverlappedComponent, AActor* O
 		}
 	}
 	
+	HasHit = true;
+	UUtils2D::PlayAnimationOnce(Sprite, End, this, &AMagicAttack::Disapear, "Disapear");
+}
+
+void AMagicAttack::Disapear()
+{
 	Destroy();
 }
 

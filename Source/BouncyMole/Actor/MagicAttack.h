@@ -31,6 +31,8 @@ class BOUNCYMOLE_API AMagicAttack : public AActor, public IRotateToCamera
 	UPaperFlipbook* End;
 
 	FVector TargetDirection;
+
+	bool HasHit = false;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -44,7 +46,7 @@ public:
 	void GoMiddle();
 	
 	UFUNCTION()
-	void Disapear() { UE_LOG(LogTemp, Warning, TEXT("Destroy")); Destroy(); }
+	void Disapear();
 
 protected:
 	// Called when the game starts or when spawned
