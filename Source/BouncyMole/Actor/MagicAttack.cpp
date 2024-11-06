@@ -3,6 +3,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 #include "PaperFlipbookComponent.h"
+#include "Module2D/Utils/Utils2D.h"
 
 // Sets default values
 AMagicAttack::AMagicAttack()
@@ -31,10 +32,7 @@ void AMagicAttack::BeginPlay()
 		throw "expected APlayerCharacter as the player class";
 	}
 
-	Sprite->SetFlipbook(Begin);
-	Sprite->SetLooping(false);
-	Sprite->OnFinishedPlaying.Clear();
-	Sprite->OnFinishedPlaying.AddDynamic(this, &AMagicAttack::GoMiddle);
+	UUtils2D::PlayAnimationOnce(Sprite, Begin, this, &AMagicAttack::GoMiddle, "GoMiddle");
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AMagicAttack::HitTarget);
 }

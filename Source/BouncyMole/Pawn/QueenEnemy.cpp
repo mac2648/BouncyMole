@@ -8,6 +8,7 @@
 #include "Sound/SoundCue.h"
 #include "PaperFlipbookComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Module2D/Utils/Utils2D.h"
 
 void AQueenEnemy::Tick(float DeltaTime)
 {
@@ -79,10 +80,7 @@ void AQueenEnemy::CastMagic()
 
 void AQueenEnemy::StartCastAnimation()
 {
-	Sprite->SetFlipbook(MagicAnim);
-	Sprite->SetLooping(false);
-	Sprite->OnFinishedPlaying.Clear();
-	Sprite->OnFinishedPlaying.AddDynamic(this, &AQueenEnemy::ChangeToIdle);
+	UUtils2D::PlayAnimationOnce(Sprite, MagicAnim, this, &AQueenEnemy::ChangeToIdle, "ChangeToIdle");
 
 	FTimerHandle Handle;
 	GetWorld()->GetTimerManager().SetTimer(Handle, this, &AQueenEnemy::CastMagic, 0.6);

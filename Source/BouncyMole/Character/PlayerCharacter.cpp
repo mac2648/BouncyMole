@@ -14,6 +14,7 @@
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
 #include "BouncyMole/Sprites/PlayerBookList.h"
+#include "Module2D/Utils/Utils2D.h"
 
 #define PUSH_FORCE 200.0f
 #define MAXIMUM_FORCE 2300.0f
@@ -57,11 +58,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	}
 	else if (CanJump() && GetSprite()->GetFlipbook() == Cast<UPlayerBookList>(BookList)->BounceNormal)
 	{
-		GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->Rest);
-		GetSprite()->SetLooping(false);
-
-		GetSprite()->OnFinishedPlaying.Clear();
-		GetSprite()->OnFinishedPlaying.AddDynamic(this, &APlayerCharacter::Land);
+		UUtils2D::PlayAnimationOnce(GetSprite(), Cast<UPlayerBookList>(BookList)->Rest, this, &APlayerCharacter::Land, "Land");
 	}
 }
 
@@ -134,10 +131,7 @@ void APlayerCharacter::DisableAddForce(const FInputActionValue& Value)
 
 	if (Direction.Length() >= 20)
 	{
-		GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->Launch);
-		GetSprite()->OnFinishedPlaying.Clear();
-		GetSprite()->OnFinishedPlaying.AddDynamic(this, &APlayerCharacter::Dash);
-		GetSprite()->SetLooping(false);
+		UUtils2D::PlayAnimationOnce(GetSprite(), Cast<UPlayerBookList>(BookList)->Launch, this, &APlayerCharacter::Dash, "Dash");
 
 		FTimerHandle Handle;
 		FTimerDelegate TimerFunc;
@@ -168,11 +162,7 @@ void APlayerCharacter::StartDrilling()
 
 void APlayerCharacter::StopDrilling()
 {
-	GetSprite()->SetFlipbook(Cast<UPlayerBookList>(BookList)->DrillLand);
-	GetSprite()->SetLooping(false);
-	
-	GetSprite()->OnFinishedPlaying.Clear();
-	GetSprite()->OnFinishedPlaying.AddDynamic(this, &APlayerCharacter::Land);
+	UUtils2D::PlayAnimationOnce(GetSprite(), Cast<UPlayerBookList>(BookList)->DrillLand, this, &APlayerCharacter::Land, "Land");
 
 	IsDrilling = false;
 	SoundComp->Stop();
@@ -208,7 +198,7 @@ void APlayerCharacter::Dash()
 
 void APlayerCharacter::UpdateAnimation(const FVector& CharVelocity)
 {
-	//GetSprite()->SetFlipbook(BookList->Idle);
+
 }
 
 void APlayerCharacter::UpdateRotation(const FVector& CharVelocity)

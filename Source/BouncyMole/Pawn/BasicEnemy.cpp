@@ -10,6 +10,7 @@
 #include "BouncyMole/GameMode/BouncyMoleGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/AudioComponent.h"
+#include "Module2D/Utils/Utils2D.h"
 
 ABasicEnemy::ABasicEnemy()
 {
@@ -41,12 +42,6 @@ void ABasicEnemy::BeginPlay()
 	}
 
 	Capsule->OnComponentBeginOverlap.AddDynamic(this, &ABasicEnemy::Attack);
-
-	/*if (CanMove)
-	{
-		SoundComp->SetSound(WalkSound);
-		SoundComp->Play();
-	}*/
 }
 
 void ABasicEnemy::Tick(float DeltaTime)
@@ -126,12 +121,7 @@ void ABasicEnemy::Die()
 		GameMode->AddTime();
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("JUST DIE"))
-	Sprite->SetFlipbook(Dead);
-	Sprite->SetLooping(false);
-	Sprite->Play();
-	Sprite->OnFinishedPlaying.Clear();
-	Sprite->OnFinishedPlaying.AddDynamic(this, &ABasicEnemy::Disapear);
+	UUtils2D::PlayAnimationOnce(Sprite, Dead, this, &ABasicEnemy::Disapear, "Disapear");
 
 	UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
 }
