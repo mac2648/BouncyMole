@@ -10,6 +10,16 @@
 #include "Kismet/GameplayStatics.h"
 #include "Module2D/Utils/Utils2D.h"
 
+void AQueenEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (APlayerCharacter* Player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(this, 0)))
+	{
+		Player->OnPlayerTakeDamage.AddDynamic(this, &AQueenEnemy::GetHappy);
+	}
+}
+
 void AQueenEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -84,4 +94,13 @@ void AQueenEnemy::StartCastAnimation()
 
 	FTimerHandle Handle;
 	GetWorld()->GetTimerManager().SetTimer(Handle, this, &AQueenEnemy::CastMagic, 0.6);
+}
+
+void AQueenEnemy::GetHappy(int Value)
+{
+	Sprite->SetFlipbook(Happy);
+
+	FTimerHandle Handle;
+
+	GetWorld()->GetTimerManager().SetTimer(Handle, this, &AQueenEnemy::ChangeToIdle, 3);
 }
