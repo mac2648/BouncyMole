@@ -8,6 +8,17 @@
 #include "Sound/SoundCue.h"
 #include "PaperFlipbookComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Module2D/Utils/Utils2D.h"
+
+void AQueenEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (APlayerCharacter* Player = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(this, 0)))
+	{
+		Player->OnPlayerTakeDamage.AddDynamic(this, &AQueenEnemy::GetHappy);
+	}
+}
 
 void AQueenEnemy::Tick(float DeltaTime)
 {
@@ -17,7 +28,7 @@ void AQueenEnemy::Tick(float DeltaTime)
 	{
 		if (CD <= 0)
 		{
-			CastMagic();
+			StartCastAnimation();
 			CD = AttackCD;
 		}
 		else
@@ -40,6 +51,8 @@ void AQueenEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 				GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 				ABasicEnemy::Die();
 			}
+			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
+
 			UE_LOG(LogTemp, Warning, TEXT("%d"), HP)
 		}
 		else
@@ -71,11 +84,23 @@ void AQueenEnemy::CastMagic()
 
 	if (MAttack)
 	{
-		MAttack->SetTarget(UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation());
+		MAttack->SetTarget(UGameplayStatics::GetPlayerPawn(this, 0)->GetActorLocation() - GetActorLocation());
 	}
-	
-	Sprite->SetFlipbook(MagicAnim);
-	Sprite->SetLooping(false);
-	Sprite->OnFinishedPlaying.Clear();
-	Sprite->OnFinishedPlaying.AddDynamic(this, &AQueenEnemy::ChangeToIdle);
+}
+
+void AQueenEnemy::StartCastAnimation()
+{
+	UUtils2D::PlayAnimationOnce(Sprite, MagicAnim, this, &AQueenEnemy::ChangeToIdle, "ChangeToIdle");
+
+	FTimerHandle Handle;
+	GetWorld()->GetTimerManager().SetTimer(Handle, this, &AQueenEnemy::CastMagic, 0.6);
+}
+
+void AQueenEnemy::GetHappy(int Value)
+{
+	Sprite->SetFlipbook(Happy);
+
+	FTimerHandle Handle;
+
+	GetWorld()->GetTimerManager().SetTimer(Handle, this, &AQueenEnemy::ChangeToIdle, 3);
 }

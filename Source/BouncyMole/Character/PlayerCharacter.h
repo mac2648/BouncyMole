@@ -17,6 +17,10 @@ class BOUNCYMOLE_API APlayerCharacter : public ACharacter2D
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(BlueprintAssignable)
+	FPlayerTakeDamage OnPlayerTakeDamage;
+
 protected:
 	UPROPERTY(EditDefaultsOnly, category = "Input")
 	UInputAction* AddForceAction;
@@ -29,9 +33,6 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, category = "UI")
 	TSubclassOf<UUserWidget> PauseWidgetClass;
-
-	UPROPERTY(BlueprintAssignable)
-	FPlayerTakeDamage OnPlayerTakeDamage;
 
 	UPROPERTY(EditdefaultsOnly, category = "Sound")
 	USoundCue* DrillSound;

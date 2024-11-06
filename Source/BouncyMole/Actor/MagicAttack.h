@@ -30,12 +30,14 @@ class BOUNCYMOLE_API AMagicAttack : public AActor, public IRotateToCamera
 	UPROPERTY(EditAnywhere, category = "Sprites")
 	UPaperFlipbook* End;
 
-	FVector Target;
+	FVector TargetDirection;
+
+	bool HasHit = false;
 	
 public:	
 	// Sets default values for this actor's properties
 	AMagicAttack();
-	void SetTarget(FVector NewTarget) { Target = NewTarget; }
+	void SetTarget(FVector NewTarget) { TargetDirection = NewTarget; TargetDirection.Normalize(); }
 
 	UFUNCTION()
 	void HitTarget(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -44,7 +46,7 @@ public:
 	void GoMiddle();
 	
 	UFUNCTION()
-	void Disapear() { UE_LOG(LogTemp, Warning, TEXT("Destroy")); Destroy(); }
+	void Disapear();
 
 protected:
 	// Called when the game starts or when spawned

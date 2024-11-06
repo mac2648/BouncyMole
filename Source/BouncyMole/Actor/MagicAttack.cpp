@@ -3,6 +3,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
 #include "PaperFlipbookComponent.h"
+#include "Module2D/Utils/Utils2D.h"
 
 // Sets default values
 AMagicAttack::AMagicAttack()
@@ -31,10 +32,7 @@ void AMagicAttack::BeginPlay()
 		throw "expected APlayerCharacter as the player class";
 	}
 
-	Sprite->SetFlipbook(Begin);
-	Sprite->SetLooping(false);
-	Sprite->OnFinishedPlaying.Clear();
-	Sprite->OnFinishedPlaying.AddDynamic(this, &AMagicAttack::GoMiddle);
+	UUtils2D::PlayAnimationOnce(Sprite, Begin, this, &AMagicAttack::GoMiddle, "GoMiddle");
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AMagicAttack::HitTarget);
 }
@@ -46,11 +44,11 @@ void AMagicAttack::Tick(float DeltaTime)
 
 	RotateToCamera();
 
-	FVector Direction = Target - GetActorLocation();
-	Direction.Normalize();
-
-	FVector Location = GetActorLocation() + Direction * DeltaTime * Speed;
-	SetActorLocation(Location);
+	if (!HasHit)
+	{
+		FVector Location = GetActorLocation() + TargetDirection * DeltaTime * Speed;
+		SetActorLocation(Location);
+	}
 }
 
 void AMagicAttack::HitTarget(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -63,6 +61,12 @@ void AMagicAttack::HitTarget(UPrimitiveComponent* OverlappedComponent, AActor* O
 		}
 	}
 	
+	HasHit = true;
+	UUtils2D::PlayAnimationOnce(Sprite, End, this, &AMagicAttack::Disapear, "Disapear");
+}
+
+void AMagicAttack::Disapear()
+{
 	Destroy();
 }
 
