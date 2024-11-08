@@ -17,6 +17,9 @@ class BOUNCYMOLE_API ABouncyMoleGameMode : public AGameModeBase
 	UPROPERTY(EditDefaultsOnly, category = "UI")
 	TSubclassOf<UUserWidget> GameOverWidgetClass;
 
+	UPROPERTY(EditDefaultsOnly, category = "UI")
+	TSubclassOf<UUserWidget> StartLevelWidget;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
 	float TimeLeft = 120.0f;
 
@@ -36,4 +39,7 @@ public:
 	void AddTime();
 
 	virtual void Tick(float DeltaTime) override;
+
+protected:
+	virtual void BeginPlay() override;
 };
