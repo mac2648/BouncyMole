@@ -8,7 +8,7 @@
 
 class UBoxComponent;
 class ACharacter;
-class UNextLevel;
+class UUserWidget;
 
 UCLASS()
 class BOUNCYMOLE_API ANextLevelTrigger : public AActor
@@ -22,7 +22,7 @@ class BOUNCYMOLE_API ANextLevelTrigger : public AActor
 	TSoftObjectPtr<UWorld> Level;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<UNextLevel> WidgetClass;
+	TSubclassOf<UUserWidget> WidgetClass;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -35,8 +35,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	UFUNCTION()
+	void StartNextLevel(UUserWidget* Widget);
+
 
 };
