@@ -32,7 +32,8 @@ void ANextLevelTrigger::Trigger(UPrimitiveComponent* OverlappedComponent, AActor
 	{
 		UGameplayStatics::GetPlayerCharacter(this, 0)->GetCharacterMovement()->Velocity = FVector::ZeroVector;
 
-		UUserWidget* Widget = CreateWidget<UUserWidget>(GetWorld(), WidgetClass);
+		UNextLevel* Widget = CreateWidget<UNextLevel>(GetWorld(), WidgetClass);
+		Widget->SetLevel(Level);
 		Widget->AddToViewport();
 		Widget->OnNativeDestruct.AddUObject(this, &ANextLevelTrigger::StartNextLevel);
 	}

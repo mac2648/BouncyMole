@@ -9,6 +9,7 @@
 class UBoxComponent;
 class ACharacter;
 class UUserWidget;
+class UNextLevel;
 
 UCLASS()
 class BOUNCYMOLE_API ANextLevelTrigger : public AActor
@@ -22,7 +23,7 @@ class BOUNCYMOLE_API ANextLevelTrigger : public AActor
 	TSoftObjectPtr<UWorld> Level;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<UUserWidget> WidgetClass;
+	TSubclassOf<UNextLevel> WidgetClass;
 	
 public:	
 	// Sets default values for this actor's properties
