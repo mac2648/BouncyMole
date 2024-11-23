@@ -26,13 +26,6 @@ void ANextLevelTrigger::BeginPlay()
 	Box->OnComponentBeginOverlap.AddDynamic(this, &ANextLevelTrigger::Trigger);
 }
 
-// Called every frame
-void ANextLevelTrigger::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 void ANextLevelTrigger::Trigger(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor == UGameplayStatics::GetPlayerCharacter(this, 0))
@@ -40,7 +33,13 @@ void ANextLevelTrigger::Trigger(UPrimitiveComponent* OverlappedComponent, AActor
 		UGameplayStatics::GetPlayerCharacter(this, 0)->GetCharacterMovement()->Velocity = FVector::ZeroVector;
 
 		UNextLevel* Widget = CreateWidget<UNextLevel>(GetWorld(), WidgetClass);
-		Widget->AddToViewport();
 		Widget->SetLevel(Level);
+		Widget->AddToViewport();
+		Widget->OnNativeDestruct.AddUObject(this, &ANextLevelTrigger::StartNextLevel);
 	}
+}
+
+void ANextLevelTrigger::StartNextLevel(UUserWidget* Widget)
+{
+	UGameplayStatics::OpenLevelBySoftObjectPtr(this, Level);
 }

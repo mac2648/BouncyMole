@@ -25,4 +25,7 @@ public:
 		Sprite->OnFinishedPlaying.Clear();
 		Sprite->OnFinishedPlaying.__Internal_AddDynamic(Object, CallBackFunction, FuncName);
 	}
+
+	UFUNCTION(BlueprintPure, Category = "Widget|Brush")
+	static FSlateBrush MakeBrushFromSprite(UPaperSprite* Sprite, int32 Width, int32 Height);
 };

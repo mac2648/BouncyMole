@@ -37,6 +37,15 @@ void ABouncyMoleGameMode::GameOver()
 	SetActorTickEnabled(false);
 }
 
+void ABouncyMoleGameMode::BeginPlay()
+{
+	//if (StartLevelWidgetClass)
+	//{
+	//	UUserWidget* GameStartWidget = CreateWidget<UUserWidget>(GetWorld(), StartLevelWidgetClass);
+	//	GameStartWidget->AddToViewport();
+	//}
+}
+
 void ABouncyMoleGameMode::Tick(float DeltaTime)
 {
 	if (TimeLeft >= 0)
