@@ -46,7 +46,7 @@ void AQueenEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 	{
 		if (Player->GetIsDrilling())
 		{
-			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(QueenRewardScore);
+			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(QueenRewardScore, ScoreType::QueenSlimeGain);
 			HP--;
 			if (HP <= 0)
 			{
@@ -58,7 +58,7 @@ void AQueenEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 		else
 		{
 			Player->TakeDamage();
-			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(-QueenRewardScore);
+			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(-QueenRewardScore, ScoreType::QueenSlimeLost);
 
 			FVector PlayerLocation = Player->GetActorLocation();
 			FVector Direction = PlayerLocation - GetActorLocation();

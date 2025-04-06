@@ -60,7 +60,7 @@ void AMagicAttack::HitTarget(UPrimitiveComponent* OverlappedComponent, AActor* O
 		if (!Player->GetIsDrilling())
 		{
 			Player->TakeDamage();
-			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(-QueenRewardScore);
+			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(-QueenRewardScore, ScoreType::QueenSlimeLost);
 		}
 	}
 	

@@ -7,9 +7,21 @@
 #include "BouncyMoleGameInstance.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FScoreChangeEvent, int, NewScore);
-/**
- * 
- */
+
+enum ScoreType : int
+{
+	GreenSlimeGain,
+	GreenSlimeLost,
+	BlueSlimeGain,
+	BlueSlimeLost,
+	QueenSlimeGain,
+	QueenSlimeLost,
+	ExtraLifes,
+	TimeLeft,
+
+	NumScoreTypes
+};
+
 UCLASS()
 class BOUNCYMOLE_API UBouncyMoleGameInstance : public UGameInstance
 {
@@ -21,15 +33,22 @@ public:
 	
 private:
 	int PlayerScore = 0;
+	int BeginOfLevelScore = 0;
+
+	short AmountOfEachScore[ScoreType::NumScoreTypes] = {};
 
 public:
-	void AddScore(int Value) { PlayerScore += Value; ScoreChangeEvent.Broadcast(PlayerScore); }
-	void MultiplyScore(float Value) { PlayerScore *= Value; ScoreChangeEvent.Broadcast(PlayerScore); }
+	void AddScore(int Value, ScoreType Type);
+	void MultiplyScore(float Value);
+	void StartLevel();
+
+	const short* GetAmountOfEachScore() const { return AmountOfEachScore; }
+	inline int GetBeginOfLevelScore() const { return BeginOfLevelScore; }
 
 	UFUNCTION(BlueprintCallable)
 	int GetPlayerScore() const { return PlayerScore; }
 
 	UFUNCTION(BlueprintCallable)
-	void ResetScore() { PlayerScore = 0; ScoreChangeEvent.Broadcast(PlayerScore); }
+	void ResetScore();
 
 };
