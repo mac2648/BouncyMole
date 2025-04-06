@@ -10,6 +10,7 @@ class UBoxComponent;
 class ACharacter;
 class UUserWidget;
 class UNextLevel;
+class UScoreScreen;
 
 UCLASS()
 class BOUNCYMOLE_API ANextLevelTrigger : public AActor
@@ -24,6 +25,11 @@ class BOUNCYMOLE_API ANextLevelTrigger : public AActor
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UNextLevel> WidgetClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UScoreScreen> ScoreWidgetClass;
+
+	UScoreScreen* ScoreScreen = nullptr;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -38,6 +44,9 @@ protected:
 
 	UFUNCTION()
 	void StartNextLevel(UUserWidget* Widget);
+
+	UFUNCTION()
+	void CloseScoreScreen();
 
 
 };

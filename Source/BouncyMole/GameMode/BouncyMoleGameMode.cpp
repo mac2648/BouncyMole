@@ -66,12 +66,12 @@ void ABouncyMoleGameMode::Tick(float DeltaTime)
 	}
 }
 
-void ABouncyMoleGameMode::AddTime()
-{
-	TimeLeft += 10.0f;
-
-	if (SoundComp->IsPlaying())
-	{
-		SoundComp->Stop();
-	}
-}
+//void ABouncyMoleGameMode::AddTime()
+//{
+//	TimeLeft += 10.0f;
+//
+//	if (SoundComp->IsPlaying())
+//	{
+//		SoundComp->Stop();
+//	}
+//}
