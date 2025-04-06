@@ -4,6 +4,8 @@
 #include "Components/SphereComponent.h"
 #include "PaperFlipbookComponent.h"
 #include "Module2D/Utils/Utils2D.h"
+#include "BouncyMole/BouncyMoleGameInstance.h"
+#include "BouncyMole/Pawn/QueenEnemy.h"
 
 // Sets default values
 AMagicAttack::AMagicAttack()
@@ -58,6 +60,7 @@ void AMagicAttack::HitTarget(UPrimitiveComponent* OverlappedComponent, AActor* O
 		if (!Player->GetIsDrilling())
 		{
 			Player->TakeDamage();
+			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(-QueenRewardScore);
 		}
 	}
 	

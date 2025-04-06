@@ -9,6 +9,7 @@
 #include "PaperFlipbookComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Module2D/Utils/Utils2D.h"
+#include "BouncyMole/BouncyMoleGameInstance.h"
 
 void AQueenEnemy::BeginPlay()
 {
@@ -45,6 +46,7 @@ void AQueenEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 	{
 		if (Player->GetIsDrilling())
 		{
+			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(QueenRewardScore);
 			HP--;
 			if (HP <= 0)
 			{
@@ -52,12 +54,11 @@ void AQueenEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 				ABasicEnemy::Die();
 			}
 			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
-
-			UE_LOG(LogTemp, Warning, TEXT("%d"), HP)
 		}
 		else
 		{
 			Player->TakeDamage();
+			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(-QueenRewardScore);
 
 			FVector PlayerLocation = Player->GetActorLocation();
 			FVector Direction = PlayerLocation - GetActorLocation();

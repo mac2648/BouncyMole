@@ -7,6 +7,9 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "BouncyMole/Widget/NextLevel.h"
+#include "BouncyMole/BouncyMoleGameInstance.h"
+#include "BouncyMole/GameMode/BouncyMoleGameMode.h"
+#include "BouncyMole/Character/PlayerCharacter.h"
 
 // Sets default values
 ANextLevelTrigger::ANextLevelTrigger()
@@ -36,6 +39,37 @@ void ANextLevelTrigger::Trigger(UPrimitiveComponent* OverlappedComponent, AActor
 		Widget->SetLevel(Level);
 		Widget->AddToViewport();
 		Widget->OnNativeDestruct.AddUObject(this, &ANextLevelTrigger::StartNextLevel);
+
+		const int LifeBonusScore = 10;
+		int PlayerHPScore = Cast<APlayerCharacter>(OtherActor)->GetCurrentHp();
+		PlayerHPScore *= LifeBonusScore;
+
+		GetGameInstance<UBouncyMoleGameInstance>()->AddScore(PlayerHPScore);
+
+		float Multiplier = 1;
+		if (ABouncyMoleGameMode* GameMode = Cast<ABouncyMoleGameMode>(UGameplayStatics::GetGameMode(this)))
+		{
+			float TimeTaken = GameMode->MaxTimeLeft - GameMode->GetTimeLeft();
+
+			if (TimeTaken < 45.0f)
+			{
+				Multiplier = 3;
+			}
+			else if (TimeTaken < 60.f)
+			{
+				Multiplier = 2;
+			}
+			else if (TimeTaken < 90.0f)
+			{
+				Multiplier = 1.5;
+			}
+			else
+			{
+				Multiplier = 1;
+			}
+		}
+
+		GetGameInstance<UBouncyMoleGameInstance>()->MultiplyScore(Multiplier);
 	}
 }
 

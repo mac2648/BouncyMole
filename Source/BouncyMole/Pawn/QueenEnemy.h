@@ -9,6 +9,8 @@
 class APlayerCharacter;
 class AMagicAttack;
 
+#define QueenRewardScore 20
+
 UCLASS()
 class BOUNCYMOLE_API AQueenEnemy : public ABasicEnemy
 {

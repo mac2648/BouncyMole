@@ -12,6 +12,14 @@ class UCapsuleComponent;
 class USoundCue;
 class UPaperFlipbook;
 
+//queen is not in the list because she has her own functions where the score is added
+UENUM(BlueprintType)
+enum EEnemyType
+{
+	GreenSlime,
+	BlueSlime
+};
+
 UCLASS()
 class BOUNCYMOLE_API ABasicEnemy : public APawn, public IRotateToCamera
 {
@@ -50,6 +58,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, category = "Movement")
 	bool CanMove = false;
+
+	UPROPERTY(EditAnywhere, category = "Sprites")
+	TEnumAsByte<EEnemyType> Type;
 
 	bool IsGoingBack = false;
 	bool IsDead = false;

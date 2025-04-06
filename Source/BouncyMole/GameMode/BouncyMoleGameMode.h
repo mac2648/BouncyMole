@@ -14,6 +14,11 @@ class BOUNCYMOLE_API ABouncyMoleGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+public:
+	const float MaxTimeLeft = 120.0f;
+
+private:
+
 	UPROPERTY(EditDefaultsOnly, category = "UI")
 	TSubclassOf<UUserWidget> GameOverWidgetClass;
 
@@ -21,7 +26,7 @@ class BOUNCYMOLE_API ABouncyMoleGameMode : public AGameModeBase
 	TSubclassOf<UUserWidget> StartLevelWidgetClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Game")
-	float TimeLeft = 120.0f;
+	float TimeLeft = MaxTimeLeft;
 
 	UPROPERTY(EditdefaultsOnly, category = "Sound")
 	class USoundCue* Countdown;
@@ -36,7 +41,7 @@ public:
 	float GetTimeLeft() const { return TimeLeft; }
 
 	void GameOver();
-	void AddTime();
+	//void AddTime();
 
 	virtual void Tick(float DeltaTime) override;
 

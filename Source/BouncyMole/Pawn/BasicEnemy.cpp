@@ -11,6 +11,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/AudioComponent.h"
 #include "Module2D/Utils/Utils2D.h"
+#include "BouncyMole/BouncyMoleGameInstance.h"
 
 ABasicEnemy::ABasicEnemy()
 {
@@ -87,13 +88,27 @@ void ABasicEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 {
 	if (APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor))
 	{
+		int ScoreReward = 0;
+
+		switch (Type)
+		{
+		case GreenSlime:
+			ScoreReward = 5;
+			break;
+		case BlueSlime:
+			ScoreReward = 10;
+			break;
+		}
+
 		if (Player->GetIsDrilling())
 		{
 			Die();
+			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(ScoreReward);
 		}
 		else
 		{
 			Player->TakeDamage();
+			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(-ScoreReward);
 
 			FVector PlayerLocation = Player->GetActorLocation();
 			FVector Direction = PlayerLocation - GetActorLocation();
@@ -115,11 +130,6 @@ void ABasicEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 void ABasicEnemy::Die()
 {
 	IsDead = true;
-
-	if (ABouncyMoleGameMode* GameMode = Cast<ABouncyMoleGameMode>(UGameplayStatics::GetGameMode(this)))
-	{
-		GameMode->AddTime();
-	}
 
 	UUtils2D::PlayAnimationOnce(Sprite, Dead, this, &ABasicEnemy::Disapear, "Disapear");
 
