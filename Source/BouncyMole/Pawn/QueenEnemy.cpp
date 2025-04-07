@@ -55,7 +55,7 @@ void AQueenEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 			}
 			UGameplayStatics::PlaySoundAtLocation(this, HitSound, GetActorLocation());
 		}
-		else
+		else if (!Player->GetIsInvunerable())
 		{
 			Player->TakeDamage();
 			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(-QueenRewardScore, ScoreType::QueenSlimeLost);

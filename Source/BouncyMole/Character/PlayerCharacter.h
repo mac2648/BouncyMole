@@ -61,6 +61,7 @@ private:
 	bool CanAct = true;
 	bool CanBounceX = true;
 	bool CanBounceY = true;
+	bool IsInvunerable = false;
 	
 public:
 	APlayerCharacter();
@@ -77,6 +78,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void TakeDamage();
 	inline bool GetIsDrilling() const { return IsDrilling; }
+	inline bool GetIsInvunerable() const { return IsInvunerable; }
 	virtual void Tick(float DeltaTime) override;
 	void StartDrilling();
 	void StopDrilling();
@@ -94,6 +96,9 @@ protected:
 
 	UFUNCTION()
 	void Dash();
+
+	UFUNCTION()
+	void BecomeVunerable();
 
 private:
 	void AddForce(const FInputActionValue& Value);

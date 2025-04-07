@@ -108,7 +108,7 @@ void ABasicEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 			Die();
 			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(ScoreReward, EnemyScoreType);
 		}
-		else
+		else if (!Player->GetIsInvunerable())
 		{
 			Player->TakeDamage();
 			int EST = static_cast<int>(EnemyScoreType) + 1;

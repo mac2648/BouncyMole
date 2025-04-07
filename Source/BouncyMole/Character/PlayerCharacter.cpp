@@ -219,8 +219,19 @@ void APlayerCharacter::TakeDamage()
 		if (ABouncyMoleGameMode* GameMode = Cast<ABouncyMoleGameMode>(UGameplayStatics::GetGameMode(this)))
 		{
 			GameMode->GameOver();
+			GameMode->SetPause(Cast<APlayerController>(GetController()));
 		}
 	}
+
+	IsInvunerable = true;
+
+	FTimerHandle Handle;
+	GetWorld()->GetTimerManager().SetTimer(Handle, this, &APlayerCharacter::BecomeVunerable, 1);
+}
+
+void APlayerCharacter::BecomeVunerable()
+{
+	IsInvunerable = false;
 }
 
 void APlayerCharacter::Pause()
