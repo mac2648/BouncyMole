@@ -10,6 +10,17 @@
 #include "Kismet/GameplayStatics.h"
 #include "Module2D/Utils/Utils2D.h"
 #include "BouncyMole/BouncyMoleGameInstance.h"
+#include "Components/WidgetComponent.h"
+
+AQueenEnemy::AQueenEnemy()
+{
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>(TEXT("HealthBar"));
+	HealthBar->SetupAttachment(RootComponent);
+
+	HealthBar->SetWidgetSpace(EWidgetSpace::Screen);
+	HealthBar->SetDrawAtDesiredSize(true);
+	HealthBar->SetRelativeLocation(FVector(0.f, 0.f, 50.f));
+}
 
 void AQueenEnemy::BeginPlay()
 {
@@ -48,6 +59,7 @@ void AQueenEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 		{
 			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(QueenRewardScore, ScoreType::QueenSlimeGain);
 			HP--;
+			OnQueenHpChange.Broadcast(float(HP)/ float(QueenMaxHP));
 			if (HP <= 0)
 			{
 				GetWorld()->GetTimerManager().ClearAllTimersForObject(this);

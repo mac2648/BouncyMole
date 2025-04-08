@@ -8,14 +8,23 @@
 
 class APlayerCharacter;
 class AMagicAttack;
+class UWidgetComponent;
 
 #define QueenRewardScore 20
+#define QueenMaxHP 3
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FQueenHpChanged, float, Percent);
 
 UCLASS()
 class BOUNCYMOLE_API AQueenEnemy : public ABasicEnemy
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(BlueprintAssignable)
+	FQueenHpChanged OnQueenHpChange;
+
+private:
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	USoundCue* HitSound;
 
@@ -28,10 +37,15 @@ class BOUNCYMOLE_API AQueenEnemy : public ABasicEnemy
 	UPROPERTY(EditAnywhere, category = "Attack")
 	float AttackCD = 6;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UWidgetComponent* HealthBar;
+
 	float CD = 6;
-	int HP = 3;
+	int HP = QueenMaxHP;
 	
 public:
+	AQueenEnemy();
+
 	virtual void Tick(float DeltaTime) override;
 
 protected:
