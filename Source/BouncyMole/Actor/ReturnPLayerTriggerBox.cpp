@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Blueprint/UserWidget.h"
 
 // Sets default values
 AReturnPLayerTriggerBox::AReturnPLayerTriggerBox()
@@ -25,6 +26,10 @@ void AReturnPLayerTriggerBox::BeginPlay()
 	PlayerStartPosition = UGameplayStatics::GetPlayerCharacter(this, 0)->GetActorLocation();
 
 	Box->OnComponentBeginOverlap.AddDynamic(this, &AReturnPLayerTriggerBox::MovePlayerBack);
+
+	MessageWidget = CreateWidget<UUserWidget>(GetWorld(), WidgetClass);
+	MessageWidget->AddToViewport();
+	MessageWidget->SetVisibility(ESlateVisibility::Hidden);
 }
 
 // Called every frame
@@ -41,5 +46,14 @@ void AReturnPLayerTriggerBox::MovePlayerBack(UPrimitiveComponent* OverlappedComp
 		OtherActor->SetActorLocation(PlayerStartPosition);
 		UGameplayStatics::GetPlayerCharacter(this, 0)->GetCharacterMovement()->Velocity = FVector::ZeroVector;
 		
+		MessageWidget->SetVisibility(ESlateVisibility::Visible);
+
+		FTimerHandle Handle;
+		GetWorld()->GetTimerManager().SetTimer(Handle, this, &AReturnPLayerTriggerBox::HideWidget, 1.5f);
 	}
+}
+
+void AReturnPLayerTriggerBox::HideWidget()
+{
+	MessageWidget->SetVisibility(ESlateVisibility::Hidden);
 }
