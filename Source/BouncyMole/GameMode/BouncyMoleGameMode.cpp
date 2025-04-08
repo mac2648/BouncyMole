@@ -39,11 +39,8 @@ void ABouncyMoleGameMode::GameOver()
 
 void ABouncyMoleGameMode::BeginPlay()
 {
-	//if (StartLevelWidgetClass)
-	//{
-	//	UUserWidget* GameStartWidget = CreateWidget<UUserWidget>(GetWorld(), StartLevelWidgetClass);
-	//	GameStartWidget->AddToViewport();
-	//}
+	SoundComp->SetSound(BackgroundMusic);
+	SoundComp->Play();
 }
 
 void ABouncyMoleGameMode::Tick(float DeltaTime)

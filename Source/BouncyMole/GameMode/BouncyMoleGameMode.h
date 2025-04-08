@@ -31,6 +31,9 @@ private:
 	UPROPERTY(EditdefaultsOnly, category = "Sound")
 	class USoundCue* Countdown;
 
+	UPROPERTY(EditdefaultsOnly, category = "Sound")
+	class USoundCue* BackgroundMusic;
+
 	UPROPERTY()
 	class UAudioComponent* SoundComp;
 	
