@@ -8,7 +8,7 @@ void UBouncyMoleGameInstance::AddScore(int Value, ScoreType Type)
 	PlayerScore += Value;
 	ScoreChangeEvent.Broadcast(PlayerScore); 
 
-	AmountOfEachScore[Type]++;
+	AmountOfEachScore[Type] += Value;
 }
 
 void UBouncyMoleGameInstance::MultiplyScore(float Value)
@@ -23,7 +23,7 @@ void UBouncyMoleGameInstance::StartLevel()
 {
 	BeginOfLevelScore = PlayerScore;
 
-	for (int Type = GreenSlimeGain; Type < NumScoreTypes; Type++)
+	for (int Type = EnemiesKilled; Type < NumScoreTypes; Type++)
 	{
 		AmountOfEachScore[Type] = 0;
 	}
@@ -35,7 +35,7 @@ void UBouncyMoleGameInstance::ResetScore()
 	BeginOfLevelScore = 0;
 	ScoreChangeEvent.Broadcast(PlayerScore);
 
-	for (int Type = GreenSlimeGain; Type < NumScoreTypes; Type++)
+	for (int Type = EnemiesKilled; Type < NumScoreTypes; Type++)
 	{
 		AmountOfEachScore[Type] = 0;
 	}

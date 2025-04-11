@@ -17,22 +17,10 @@ class BOUNCYMOLE_API UScoreScreen : public UUserWidget
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UTextBlock* GreenSlimeScoreGain;
+	UTextBlock* EnemyScoreGain;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UTextBlock* GreenSlimeScoreLost;
-
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UTextBlock* BlueSlimeScoreGain;
-
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UTextBlock* BlueSlimeScoreLost;
-
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UTextBlock* QueenSlimeScoreGain;
-
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
-	UTextBlock* QueenSlimeScoreLost;
+	UTextBlock* EnemyScoreLost;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess = "true"))
 	UTextBlock* ExtraLivesScore;

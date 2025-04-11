@@ -10,12 +10,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FScoreChangeEvent, int, NewScore);
 
 enum ScoreType : int
 {
-	GreenSlimeGain,
-	GreenSlimeLost,
-	BlueSlimeGain,
-	BlueSlimeLost,
-	QueenSlimeGain,
-	QueenSlimeLost,
+	EnemiesKilled,
+	DamageTaken,
 	ExtraLifes,
 	TimeLeft,
 
