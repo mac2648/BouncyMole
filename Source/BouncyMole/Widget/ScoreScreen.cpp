@@ -12,60 +12,21 @@ void UScoreScreen::NativeConstruct()
 
 	const short* Scores = GameInstance->GetAmountOfEachScore();
 
-	for (int Type = GreenSlimeGain; Type < NumScoreTypes; Type++)
-	{
-		FString ScoreString;
-		switch(Type)
-		{
-		case GreenSlimeGain:
-			ScoreString.Append("+5 x ");
-			ScoreString.AppendInt(Scores[GreenSlimeGain]);
-			GreenSlimeScoreGain->SetText(FText::FromString(ScoreString));
-			break;
+	FString Score = "";
+	Score.AppendInt(Scores[DamageTaken]);
+	EnemyScoreLost->SetText(FText::FromString(Score));
+	Score.Empty();
 
-		case GreenSlimeLost:
-			ScoreString.Append("-5 x ");
-			ScoreString.AppendInt(Scores[GreenSlimeLost]);
-			GreenSlimeScoreLost->SetText(FText::FromString(ScoreString));
-			break;
+	Score.AppendInt(Scores[EnemiesKilled]);
+	EnemyScoreGain->SetText(FText::FromString(Score));
+	Score.Empty();
 
-		case BlueSlimeGain:
-			ScoreString.Append("+10 x ");
-			ScoreString.AppendInt(Scores[BlueSlimeGain]);
-			BlueSlimeScoreGain->SetText(FText::FromString(ScoreString));
-			break;
+	Score.AppendInt(Scores[TimeLeft]);
+	TimeExtraScore->SetText(FText::FromString(Score));
+	Score.Empty();
 
-		case BlueSlimeLost:
-			ScoreString.Append("-10 x ");
-			ScoreString.AppendInt(Scores[BlueSlimeLost]);
-			BlueSlimeScoreLost->SetText(FText::FromString(ScoreString));
-			break;
-
-		case QueenSlimeGain:
-			ScoreString.Append("+20 x ");
-			ScoreString.AppendInt(Scores[QueenSlimeGain]);
-			QueenSlimeScoreGain->SetText(FText::FromString(ScoreString));
-			break;
-
-		case QueenSlimeLost:
-			ScoreString.Append("-20 x ");
-			ScoreString.AppendInt(Scores[QueenSlimeLost]);
-			QueenSlimeScoreLost->SetText(FText::FromString(ScoreString));
-			break;
-
-		case ExtraLifes:
-			ScoreString.Append("10 x ");
-			ScoreString.AppendInt(Scores[ExtraLifes]);
-			ExtraLivesScore->SetText(FText::FromString(ScoreString));
-			break;
-
-		case TimeLeft:
-			ScoreString.Append("x");
-			ScoreString.AppendInt(Scores[TimeLeft]);
-			TimeExtraScore->SetText(FText::FromString(ScoreString));
-			break;
-		}
-	}
+	Score.AppendInt(Scores[ExtraLifes]);
+	ExtraLivesScore->SetText(FText::FromString(Score));
 
 	FString BeginLevelScoreString("Starting Score: ");
 	BeginLevelScoreString.AppendInt(GameInstance->GetBeginOfLevelScore());

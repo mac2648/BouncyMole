@@ -89,31 +89,26 @@ void ABasicEnemy::Attack(UPrimitiveComponent* OverlappedComponent, AActor* Other
 	if (APlayerCharacter* Player = Cast<APlayerCharacter>(OtherActor))
 	{
 		int ScoreReward = 0;
-		ScoreType EnemyScoreType = NumScoreTypes;
 
 		switch (Type)
 		{
 		case GreenSlime:
 			ScoreReward = 5;
-			EnemyScoreType = GreenSlimeGain;
 			break;
 		case BlueSlime:
 			ScoreReward = 10;
-			EnemyScoreType = BlueSlimeGain;
 			break;
 		}
 
 		if (Player->GetIsDrilling())
 		{
 			Die();
-			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(ScoreReward, EnemyScoreType);
+			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(ScoreReward, EnemiesKilled);
 		}
 		else if (!Player->GetIsInvunerable())
 		{
 			Player->TakeDamage();
-			int EST = static_cast<int>(EnemyScoreType) + 1;
-			EnemyScoreType =static_cast<ScoreType>(EST);
-			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(-ScoreReward, EnemyScoreType);
+			GetGameInstance<UBouncyMoleGameInstance>()->AddScore(-ScoreReward, DamageTaken);
 
 			FVector PlayerLocation = Player->GetActorLocation();
 			FVector Direction = PlayerLocation - GetActorLocation();

@@ -72,7 +72,7 @@ void ANextLevelTrigger::Trigger(UPrimitiveComponent* OverlappedComponent, AActor
 		ScoreScreen->AddToViewport();
 
 		FTimerHandle Handle;
-		GetWorld()->GetTimerManager().SetTimer(Handle, this, &ANextLevelTrigger::CloseScoreScreen, 3);
+		GetWorld()->GetTimerManager().SetTimer(Handle, this, &ANextLevelTrigger::CloseScoreScreen, 5);
 	}
 }
 
